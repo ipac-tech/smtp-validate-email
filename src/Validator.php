@@ -372,9 +372,11 @@ class Validator
             try {
                 $this->connect($host);
                 if ($this->connected()) {
+                    $this->results['code'] = self::SMTP_CONNECT_SUCCESS;
                     break;
                 }
             } catch (NoConnectionException $e) {
+                $this->results['code'] = self::SMTP_MAIL_ACTION_NOT_TAKEN;
                 // Unable to connect to host, so these addresses are invalid?
                 $this->debug('Unable to connect. Exception caught: ' . $e->getMessage());
             }
