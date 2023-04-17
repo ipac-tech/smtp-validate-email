@@ -372,9 +372,17 @@ class Validator
             try {
                 $this->connect($host);
                 if ($this->connected()) {
+                    if (!empty($codeFlag)) {
+                        unset($this->results['code']);
+                    }
                     break;
                 }
             } catch (NoConnectionException $e) {
+                //exclude self domain: https://www.rfc-editor.org/rfc/rfc2821
+                if (count($mxs) > 1) {
+                    $codeFlag = true;
+                    $this->results['code'] = self::SMTP_MAIL_ACTION_NOT_TAKEN;
+                }
                 // Unable to connect to host, so these addresses are invalid?
                 $this->debug('Unable to connect. Exception caught: ' . $e->getMessage());
             }
