@@ -378,7 +378,7 @@ class Validator
                     break;
                 }
             } catch (NoConnectionException $e) {
-                //exclude self domain　https://www.rfc-editor.org/rfc/rfc2821
+                //exclude self domain: https://www.rfc-editor.org/rfc/rfc2821
                 if (count($mxs) > 1) {
                     $codeFlag = true;
                     $this->results['code'] = self::SMTP_MAIL_ACTION_NOT_TAKEN;
