@@ -367,8 +367,8 @@ class Validator
      */
     protected function attemptConnection(array $mxs): void
     {
-        // Try each host
-        foreach ($mxs as $host => $weight) {
+        // Try each host, $_weight unused in the foreach body, but array_keys() doesn't guarantee the order
+        foreach ($mxs as $host => $_weight) {
             try {
                 $this->connect($host);
                 if ($this->connected()) {
@@ -378,7 +378,8 @@ class Validator
                     break;
                 }
             } catch (NoConnectionException $e) {
-                if ($weight > 0) {
+                //exclude self domain
+                if (count($mxs) > 1) {
                     $codeFlag = true;
                     $this->results['code'] = self::SMTP_MAIL_ACTION_NOT_TAKEN;
                 }
